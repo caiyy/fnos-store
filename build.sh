@@ -6,6 +6,7 @@ SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 BUILD_DIR="$SCRIPT_DIR/build"
 FNOS_DIR="$SCRIPT_DIR/fnos"
 FNPACK="$BUILD_DIR/fnpack"
+DIST_DIR="$SCRIPT_DIR/dist"
 
 RED='\033[0;31m'
 GREEN='\033[0;32m'
@@ -25,12 +26,13 @@ trap cleanup EXIT
 [ -d "$FNOS_DIR" ] || error "fnos/ 目录不存在"
 
 mkdir -p "$BUILD_DIR/tmp"
+mkdir -p "$DIST_DIR"
 
 # ── Step 1: Build frontend ──────────────────────────────────────────────────
 info "构建前端..."
 if [ -d "$SCRIPT_DIR/frontend" ] && [ -f "$SCRIPT_DIR/frontend/package.json" ]; then
     cd "$SCRIPT_DIR/frontend"
-    npm install --silent
+    npm ci --silent
     npm run build
     cd "$SCRIPT_DIR"
     info "前端构建完成"
@@ -62,6 +64,8 @@ for PLATFORM in x86 arm; do
     cp -a "$FNOS_DIR" "$STAGING"
 
     cp "$BINARY" "$STAGING/app/store-server"
+    cp "$SCRIPT_DIR/apps.json" "$STAGING/app/apps.json"
+    cp "$SCRIPT_DIR/recommended.json" "$STAGING/app/recommended.json"
     if [ -d "$SCRIPT_DIR/web" ]; then
         cp -r "$SCRIPT_DIR/web" "$STAGING/app/web"
     fi
@@ -72,13 +76,21 @@ for PLATFORM in x86 arm; do
     fi
 
     cd "$SCRIPT_DIR"
-    "$FNPACK" build --directory "$STAGING"
+    "$FNPACK" build --nosign --directory "$STAGING"
 
     APPNAME=$(grep "^appname" "$STAGING/manifest" | awk -F'=' '{print $2}' | tr -d ' ')
     VERSION=$(grep "^version" "$STAGING/manifest" | awk -F'=' '{print $2}' | tr -d ' ')
     FPK_NAME="${APPNAME}_${VERSION}_${PLATFORM}.fpk"
-    mv "${APPNAME}.fpk" "$FPK_NAME" 2>/dev/null || true
+    mv "${APPNAME}.fpk" "$DIST_DIR/$FPK_NAME"
+    (
+        cd "$DIST_DIR"
+        if command -v sha256sum >/dev/null 2>&1; then
+            sha256sum "$FPK_NAME" > "$FPK_NAME.sha256"
+        else
+            shasum -a 256 "$FPK_NAME" > "$FPK_NAME.sha256"
+        fi
+    )
 done
 
 info "构建完成！"
-ls -lh "$SCRIPT_DIR"/*_*.fpk 2>/dev/null || true
+ls -lh "$DIST_DIR"/*_*.fpk 2>/dev/null || true

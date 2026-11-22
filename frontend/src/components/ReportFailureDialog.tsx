@@ -71,7 +71,7 @@ export function ReportFailureDialog({ open, onClose, app, step, errorMessage }: 
   }, [open, app, step, errorMessage]);
 
   const handleReport = () => {
-    const url = data?.issue_url || 'https://github.com/conversun/fnos-apps/issues/new?template=bug-report.yml';
+    const url = data?.issue_url || 'https://github.com/caiyy/fnos-store/issues/new?template=bug-report.yml';
     window.open(url, '_blank');
   };
 

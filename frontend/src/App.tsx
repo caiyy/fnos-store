@@ -62,7 +62,7 @@ const App: React.FC = () => {
   const locale = useLocale();
   useEffect(() => {
     document.documentElement.lang = locale;
-    document.title = `fnOS Apps - ${t('应用商店')}`;
+    document.title = `Cocode Store - ${t('应用商店')}`;
   }, [locale]);
   const [apps, setApps] = useState<AppInfo[]>([]);
   // false on fnOS builds whose update path destroys the app (see backend
@@ -626,7 +626,7 @@ const App: React.FC = () => {
            ) : (
              <div className="flex items-start justify-between gap-2">
                <div className="min-w-0">
-                 <h1 className="text-xl font-semibold tracking-tight whitespace-nowrap">fnOS Apps</h1>
+                 <h1 className="text-xl font-semibold tracking-tight whitespace-nowrap">Cocode Store</h1>
                  <p className="text-sm text-muted-foreground mt-1.5 break-words">
                     {t('上次检查')}: {lastCheck ? new Date(lastCheck).toLocaleString(locale) : t('从未')}
                  </p>
@@ -831,7 +831,7 @@ const App: React.FC = () => {
                         <SheetContent side="left" className="w-64 p-0 flex flex-col h-full">
                              <SheetTitle className="sr-only">{t('导航')}</SheetTitle>
                              <div className="p-6 border-b border-border shrink-0">
-                                <h1 className="text-xl font-semibold tracking-tight">fnOS Apps</h1>
+                                <h1 className="text-xl font-semibold tracking-tight">Cocode Store</h1>
                                 <p className="text-sm text-muted-foreground mt-1.5">
                                    {t('上次检查')}: {lastCheck ? new Date(lastCheck).toLocaleString(locale) : t('从未')}
                                 </p>
@@ -938,7 +938,7 @@ const App: React.FC = () => {
                               </div>
                         </SheetContent>
                     </Sheet>
-                    <h1 className="text-xl font-bold">fnOS Apps</h1>
+                    <h1 className="text-xl font-bold">Cocode Store</h1>
                 </div>
                 <Button
                   variant="ghost"

@@ -1,0 +1,42 @@
+name: Sync application feed
+
+on:
+  schedule:
+    - cron: "23 * * * *"
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - scripts/sync-apps-json.sh
+      - .github/workflows/sync-apps.yml
+
+permissions:
+  contents: write
+
+concurrency:
+  group: cocode-store-feed
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Update apps.json
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: ./scripts/sync-apps-json.sh
+
+      - name: Commit feed changes
+        shell: bash
+        run: |
+          if git diff --quiet -- apps.json; then
+            echo "No feed changes"
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add apps.json
+          git commit -m "chore: refresh application feed"
+          git push origin main

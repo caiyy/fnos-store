@@ -17,8 +17,8 @@ import (
 )
 
 const (
-	defaultAppsJSONURL = "https://raw.githubusercontent.com/conversun/fnos-apps/main/apps.json"
-	githubReleaseBase  = "https://github.com/conversun/fnos-apps/releases/download"
+	defaultAppsJSONURL = "https://raw.githubusercontent.com/caiyy/fnos-store/main/apps.json"
+	githubReleaseBase  = "https://github.com/caiyy/Agent2API_FnOS/releases/download"
 )
 
 type FNOSAppsSource struct {
@@ -61,14 +61,14 @@ func NewFNOSAppsSource(cachePath, localPath string, cfgMgr *config.Manager) *FNO
 		cachePath:  cachePath,
 		localPath:  localPath,
 		platform:   platform.DetectPlatform(),
-		name:       "fnos-apps",
+		name:       "cocode-store",
 		configMgr:  cfgMgr,
 	}
 }
 
 func (s *FNOSAppsSource) Name() string {
 	if s.name == "" {
-		return "fnos-apps"
+		return "cocode-store"
 	}
 	return s.name
 }

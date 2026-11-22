@@ -2,8 +2,8 @@
     ".url": {
         "fnos-apps-store.Application": 
         {
-            "title": "fnOS Apps",
-            "desc": "fnOS Apps",
+            "title": "Cocode Store",
+            "desc": "Agent2API 第三方应用商店",
             "icon": "images/{0}.png",
             "type": "iframe",
             "protocol": "",

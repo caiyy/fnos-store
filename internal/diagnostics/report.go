@@ -12,7 +12,7 @@ const (
 	MaxLogLines      = 80
 	MaxErrorMsgBytes = 1024
 	MaxURLBytes      = 6144
-	IssueRepoURL     = "https://github.com/conversun/fnos-apps/issues/new"
+	IssueRepoURL     = "https://github.com/caiyy/fnos-store/issues/new"
 	IssueTemplate    = "bug-report.yml"
 )
 

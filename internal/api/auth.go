@@ -34,7 +34,7 @@ func (s *Server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	if hash != "" {
 		username, token, ok := r.BasicAuth()
 		if !ok || username != "fnos" || subtle.ConstantTimeCompare([]byte(accessTokenHash(token)), []byte(hash)) != 1 {
-			w.Header().Set("WWW-Authenticate", `Basic realm="fnOS Apps (username: fnos)", charset="UTF-8"`)
+			w.Header().Set("WWW-Authenticate", `Basic realm="Cocode Store (username: fnos)", charset="UTF-8"`)
 			w.Header().Set("Cache-Control", "no-store")
 			writeAPIError(w, http.StatusUnauthorized, "请输入访问令牌（用户名：fnos）")
 			return

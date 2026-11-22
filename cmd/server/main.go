@@ -50,12 +50,12 @@ func main() {
 	ac := platform.NewAppCenter(projectRoot)
 	src := source.NewFNOSAppsSource(
 		cachePath,
-		filepath.Join(projectRoot, "..", "fnos-apps", "apps.json"),
+		filepath.Join(projectRoot, "apps.json"),
 		cfgMgr,
 	)
 	recommendedSrc := source.NewRecommendedSource(
 		filepath.Join(dataDir, "cache", "recommended.json"),
-		filepath.Join(projectRoot, "..", "fnos-apps", "recommended.json"),
+		filepath.Join(projectRoot, "recommended.json"),
 		cfgMgr,
 	)
 	reg := core.NewRegistry()

@@ -1,23 +1,31 @@
-name: Release
+name: Build store packages
 
 on:
+  workflow_dispatch:
   push:
-    tags:
-      - 'v*'
+    tags: ["v*"]
+    branches: [main]
+    paths:
+      - cmd/**
+      - internal/**
+      - frontend/src/**
+      - frontend/package.json
+      - frontend/package-lock.json
+      - fnos/**
+      - apps.json
+      - recommended.json
+      - build.sh
+      - web_embed.go
+      - .github/workflows/release.yml
 
 permissions:
   contents: write
 
 jobs:
-  build-and-release:
+  build:
     runs-on: ubuntu-latest
-    # Bind PAT to job-level env so the conditional `if` on the dispatch step can
-    # see whether it is configured (step-level env is evaluated AFTER `if`).
-    env:
-      FNOS_APPS_DISPATCH_TOKEN: ${{ secrets.FNOS_APPS_DISPATCH_TOKEN }}
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -27,52 +35,41 @@ jobs:
       - name: Setup Go
         uses: actions/setup-go@v5
         with:
-          go-version-file: 'go.mod'
+          go-version-file: go.mod
 
-      - name: Build Frontend
+      - name: Download fnpack
+        shell: bash
         run: |
-          cd frontend
-          npm ci
-          npm run build
+          mkdir -p build
+          curl -fsSL --retry 5 \
+            -o build/fnpack \
+            https://static2.fnnas.com/fnpack/fnpack-1.3.3-linux-amd64
+          chmod +x build/fnpack
 
-      - name: Build Linux amd64
-        run: GOOS=linux GOARCH=amd64 go build -o store-server-linux-amd64 ./cmd/server/
+      - name: Test Go
+        run: go test ./...
 
-      - name: Build Linux arm64
-        run: GOOS=linux GOARCH=arm64 go build -o store-server-linux-arm64 ./cmd/server/
+      - name: Build FPK packages
+        shell: bash
+        run: ./build.sh
 
-      - name: Create Release
+      - name: Upload workflow artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: cocode-store-fpk
+          path: |
+            dist/*.fpk
+            dist/*.sha256
+          if-no-files-found: error
+
+      - name: Create fpk release
+        if: startsWith(github.ref, 'refs/tags/v')
+        shell: bash
         run: |
-          TAG="${{ github.ref_name }}"
-          if gh release view "$TAG" &>/dev/null; then
-            echo "Release $TAG exists, uploading assets..."
-            gh release upload "$TAG" \
-              store-server-linux-amd64 \
-              store-server-linux-arm64 \
-              --clobber
-          else
-            gh release create "$TAG" \
-              --title "fnos-store $TAG" \
-              --generate-notes \
-              store-server-linux-amd64 \
-              store-server-linux-arm64
-          fi
+          gh release create "${{ github.ref_name }}" \
+            --title "Cocode Store ${{ github.ref_name }}" \
+            --generate-notes \
+            dist/*.fpk \
+            dist/*.sha256
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Trigger fnos-apps rebuild (auto-publish .fpk)
-        # Skip cleanly when the cross-repo PAT isn't configured (forks, first deploy).
-        # When configured, this drops the propagation lag from ~24h (daily cron)
-        # to ~5min (immediate dispatch -> build -> apps.json refresh).
-        if: env.FNOS_APPS_DISPATCH_TOKEN != ''
-        run: |
-          TAG="${{ github.ref_name }}"
-          VERSION="${TAG#v}"
-          echo "Dispatching fnos-apps build for fnos-apps-store version $VERSION"
-          gh workflow run build-apps.yml \
-            --repo conversun/fnos-apps \
-            --ref main \
-            --field app=fnos-apps-store \
-            --field version="$VERSION"
-        env:
-          GH_TOKEN: ${{ env.FNOS_APPS_DISPATCH_TOKEN }}

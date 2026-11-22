@@ -4,6 +4,7 @@ dist/
 var/
 .sisyphus/
 .DS_Store
+.verify/
 store-server-linux-*
 /server
 .omo/

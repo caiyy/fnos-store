@@ -64,7 +64,7 @@ func main() {
 		log.Printf("cleanup stale tmp files failed: %v", err)
 	}
 
-	checkInterval := time.Duration(cfg.CheckIntervalHours) * time.Hour
+	checkInterval := time.Duration(cfg.CheckIntervalMinutes) * time.Minute
 
 	srv := api.NewServer(api.Config{
 		AppCenter:         ac,
@@ -91,6 +91,16 @@ func main() {
 		log.Fatalf("listen failed: %v", err)
 	}
 	go sched.Start(ctx)
+	go func() {
+		select {
+		case <-time.After(8 * time.Second):
+		case <-ctx.Done():
+			return
+		}
+		if err := srv.CheckAndAutoUpdate(ctx); err != nil {
+			log.Printf("startup auto-update check failed: %v", err)
+		}
+	}()
 
 	httpServer := &http.Server{
 		Addr:    addr,

@@ -1,6 +1,8 @@
 package api
 
 import (
+	"context"
+	"log"
 	"net/http"
 
 	"fnos-store/internal/core"
@@ -31,6 +33,14 @@ func (s *Server) handleCheck(w http.ResponseWriter, r *http.Request) {
 	if fetchErr != nil {
 		resp.Status = "partial"
 		resp.Warning = fetchErr.Error()
+	}
+
+	if cfg.AutoUpdate && updates > 0 {
+		go func() {
+			if err := s.CheckAndAutoUpdate(context.Background()); err != nil {
+				log.Printf("auto-update triggered by manual check failed: %v", err)
+			}
+		}()
 	}
 
 	writeJSON(w, http.StatusOK, resp)

@@ -152,6 +152,6 @@ gh secret set FNOS_APPS_DISPATCH_TOKEN --repo conversun/fnos-store --body <PAT>
 
 - **Self-update kills the process** — `runSelfUpdate()` in pipeline.go: fnOS restarts the service after install-fpk. Frontend polls `/api/status` to detect restart.
 - **Mirror priority** — tries mirror URL first, falls back to direct GitHub URL on failure.
-- **Config defaults** — check every 6 hours, mirror = ghfast. Stored in `{DATA_DIR}/config.json`.
+- **Config defaults** — check every 10 minutes, mirror = gh-proxy. Stored in `{DATA_DIR}/config.json`.
 - **Dev mode auto-detection** — if `/var/apps` doesn't exist, uses `dev/mock-apps/` and `var/` locally.
 - **Vite proxy** — in dev mode, frontend proxies `/api/*` to `localhost:8011` (check `vite.config.ts`).

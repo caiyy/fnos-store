@@ -92,8 +92,8 @@ func (s *Scheduler) Stop() {
 }
 
 func (s *Scheduler) SetInterval(d time.Duration) {
-	if d < 1*time.Hour {
-		d = 1 * time.Hour
+	if d < 10*time.Minute {
+		d = 10 * time.Minute
 	}
 
 	s.mu.Lock()

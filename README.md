@@ -5,9 +5,9 @@
 
 ## 工作方式
 
-- GitHub Actions 每小时读取 `caiyy/Agent2API_FnOS` 最新 Release。
+- GitHub Actions 每 10 分钟读取 `caiyy/Agent2API_FnOS` 最新 Release。
 - 自动生成根目录 `apps.json`，并提交回本仓库。
-- 商店默认每小时重新读取应用源，自动安装可安全升级的新版本。
+- 商店默认每 10 分钟重新读取应用源，自动安装可安全升级的新版本。
 - 更新通过飞牛应用中心的数据保留 RPC 执行，不会直接覆盖应用目录。
 - 商店本身以 root 运行，只允许受信任的 GitHub Release 作为应用源。
 

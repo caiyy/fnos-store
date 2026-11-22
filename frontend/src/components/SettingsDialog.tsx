@@ -58,7 +58,7 @@ const SettingsDialog: React.FC<SettingsDialogProps> = ({
   onStoreUpdate,
 }) => {
   useLocale();
-  const [interval, setInterval] = useState<number>(24);
+  const [interval, setInterval] = useState<number>(10);
   const [autoUpdate, setAutoUpdate] = useState<boolean>(true);
   const [mirror, setMirror] = useState<string>('gh-proxy');
   const [mirrorOptions, setMirrorOptions] = useState<MirrorOption[]>([]);
@@ -109,7 +109,7 @@ const SettingsDialog: React.FC<SettingsDialogProps> = ({
           fetchStoreUpdate()
         ]);
         if (cancelled) return;
-        setInterval(settings.check_interval_hours);
+        setInterval(settings.check_interval_minutes);
         setAutoUpdate(settings.auto_update ?? true);
         setAccessProtection(settings.access_protection ?? false);
         setAccessToken(undefined);
@@ -197,7 +197,7 @@ const SettingsDialog: React.FC<SettingsDialogProps> = ({
     try {
       await updateSettings({
         access_token: accessToken,
-        check_interval_hours: interval,
+        check_interval_minutes: interval,
         auto_update: autoUpdate,
         mirror,
         docker_mirror: dockerMirror,
@@ -263,10 +263,11 @@ const SettingsDialog: React.FC<SettingsDialogProps> = ({
                   <SelectValue placeholder={t('选择间隔')} />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="1">{t('1 小时')}</SelectItem>
-                  <SelectItem value="6">{t('6 小时')}</SelectItem>
-                  <SelectItem value="12">{t('12 小时')}</SelectItem>
-                  <SelectItem value="24">{t('24 小时')}</SelectItem>
+                  <SelectItem value="10">{t('10 分钟')}</SelectItem>
+                  <SelectItem value="30">{t('30 分钟')}</SelectItem>
+                  <SelectItem value="60">{t('1 小时')}</SelectItem>
+                  <SelectItem value="360">{t('6 小时')}</SelectItem>
+                  <SelectItem value="1440">{t('24 小时')}</SelectItem>
                 </SelectContent>
               </Select>
             </div>

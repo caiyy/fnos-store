@@ -36,7 +36,7 @@ test.beforeEach(async ({ page }) => {
         } });
       case '/api/settings':
         return route.fulfill({ json: {
-          check_interval_hours: 24, mirror: 'direct', docker_mirror: 'direct', install_volume: 0,
+          check_interval_minutes: 10, mirror: 'direct', docker_mirror: 'direct', install_volume: 0,
         } });
       case '/api/store-update':
         return route.fulfill({ json: { current_version: '1.9.10', has_update: false } });

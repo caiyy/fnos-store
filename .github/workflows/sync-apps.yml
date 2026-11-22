@@ -2,7 +2,7 @@ name: Sync application feed
 
 on:
   schedule:
-    - cron: "23 * * * *"
+    - cron: "7-59/10 * * * *"
   workflow_dispatch:
   push:
     branches: [main]

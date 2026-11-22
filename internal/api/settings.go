@@ -22,28 +22,28 @@ type volumeOptionResponse struct {
 }
 
 type settingsResponse struct {
-	AccessProtection    bool                   `json:"access_protection"`
-	CheckIntervalHours  int                    `json:"check_interval_hours"`
-	AutoUpdate          bool                   `json:"auto_update"`
-	Mirror              string                 `json:"mirror"`
-	MirrorOptions       []mirrorOptionResponse `json:"mirror_options"`
-	DockerMirror        string                 `json:"docker_mirror"`
-	DockerMirrorOptions []mirrorOptionResponse `json:"docker_mirror_options"`
-	CustomGitHubMirror  string                 `json:"custom_github_mirror,omitempty"`
-	CustomDockerMirror  string                 `json:"custom_docker_mirror,omitempty"`
-	InstallVolume       int                    `json:"install_volume"`
-	VolumeOptions       []volumeOptionResponse `json:"volume_options"`
+	AccessProtection     bool                   `json:"access_protection"`
+	CheckIntervalMinutes int                    `json:"check_interval_minutes"`
+	AutoUpdate           bool                   `json:"auto_update"`
+	Mirror               string                 `json:"mirror"`
+	MirrorOptions        []mirrorOptionResponse `json:"mirror_options"`
+	DockerMirror         string                 `json:"docker_mirror"`
+	DockerMirrorOptions  []mirrorOptionResponse `json:"docker_mirror_options"`
+	CustomGitHubMirror   string                 `json:"custom_github_mirror,omitempty"`
+	CustomDockerMirror   string                 `json:"custom_docker_mirror,omitempty"`
+	InstallVolume        int                    `json:"install_volume"`
+	VolumeOptions        []volumeOptionResponse `json:"volume_options"`
 }
 
 type settingsRequest struct {
-	AccessToken        *string `json:"access_token"`
-	CheckIntervalHours int     `json:"check_interval_hours"`
-	AutoUpdate         *bool   `json:"auto_update"`
-	Mirror             string  `json:"mirror"`
-	DockerMirror       string  `json:"docker_mirror"`
-	CustomGitHubMirror string  `json:"custom_github_mirror"`
-	CustomDockerMirror string  `json:"custom_docker_mirror"`
-	InstallVolume      int     `json:"install_volume"`
+	AccessToken          *string `json:"access_token"`
+	CheckIntervalMinutes int     `json:"check_interval_minutes"`
+	AutoUpdate           *bool   `json:"auto_update"`
+	Mirror               string  `json:"mirror"`
+	DockerMirror         string  `json:"docker_mirror"`
+	CustomGitHubMirror   string  `json:"custom_github_mirror"`
+	CustomDockerMirror   string  `json:"custom_docker_mirror"`
+	InstallVolume        int     `json:"install_volume"`
 }
 
 func githubMirrorOptionsResponse() []mirrorOptionResponse {
@@ -81,17 +81,17 @@ func (s *Server) handleGetSettings(w http.ResponseWriter, _ *http.Request) {
 	}
 
 	writeJSON(w, http.StatusOK, settingsResponse{
-		AccessProtection:    cfg.AccessTokenHash != "",
-		CheckIntervalHours:  cfg.CheckIntervalHours,
-		AutoUpdate:          cfg.AutoUpdate,
-		Mirror:              cfg.Mirror,
-		MirrorOptions:       githubMirrorOptionsResponse(),
-		DockerMirror:        cfg.DockerMirror,
-		DockerMirrorOptions: dockerMirrorOptionsResponse(),
-		CustomGitHubMirror:  cfg.CustomGitHubMirror,
-		CustomDockerMirror:  cfg.CustomDockerMirror,
-		InstallVolume:       cfg.InstallVolume,
-		VolumeOptions:       volOpts,
+		AccessProtection:     cfg.AccessTokenHash != "",
+		CheckIntervalMinutes: cfg.CheckIntervalMinutes,
+		AutoUpdate:           cfg.AutoUpdate,
+		Mirror:               cfg.Mirror,
+		MirrorOptions:        githubMirrorOptionsResponse(),
+		DockerMirror:         cfg.DockerMirror,
+		DockerMirrorOptions:  dockerMirrorOptionsResponse(),
+		CustomGitHubMirror:   cfg.CustomGitHubMirror,
+		CustomDockerMirror:   cfg.CustomDockerMirror,
+		InstallVolume:        cfg.InstallVolume,
+		VolumeOptions:        volOpts,
 	})
 }
 
@@ -107,8 +107,8 @@ func (s *Server) handlePutSettings(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if req.CheckIntervalHours < 1 {
-		req.CheckIntervalHours = config.DefaultCheckIntervalHours
+	if req.CheckIntervalMinutes < 1 {
+		req.CheckIntervalMinutes = config.DefaultCheckIntervalMinutes
 	}
 
 	if req.Mirror == "" {
@@ -135,15 +135,15 @@ func (s *Server) handlePutSettings(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 	cfg := config.Config{
-		AccessTokenHash:    tokenHash,
-		CheckIntervalHours: req.CheckIntervalHours,
-		AutoUpdate:         autoUpdate,
-		Mirror:             req.Mirror,
-		DockerMirror:       req.DockerMirror,
-		CustomGitHubMirror: req.CustomGitHubMirror,
-		CustomDockerMirror: req.CustomDockerMirror,
-		InstallVolume:      req.InstallVolume,
-		IgnoredApps:        existing.IgnoredApps,
+		AccessTokenHash:      tokenHash,
+		CheckIntervalMinutes: req.CheckIntervalMinutes,
+		AutoUpdate:           autoUpdate,
+		Mirror:               req.Mirror,
+		DockerMirror:         req.DockerMirror,
+		CustomGitHubMirror:   req.CustomGitHubMirror,
+		CustomDockerMirror:   req.CustomDockerMirror,
+		InstallVolume:        req.InstallVolume,
+		IgnoredApps:          existing.IgnoredApps,
 	}
 
 	if err := s.configMgr.SaveConfig(cfg); err != nil {
@@ -152,7 +152,7 @@ func (s *Server) handlePutSettings(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if s.scheduler != nil {
-		s.scheduler.SetInterval(time.Duration(req.CheckIntervalHours) * time.Hour)
+		s.scheduler.SetInterval(time.Duration(req.CheckIntervalMinutes) * time.Minute)
 	}
 
 	var volOpts []volumeOptionResponse
@@ -164,16 +164,16 @@ func (s *Server) handlePutSettings(w http.ResponseWriter, r *http.Request) {
 	}
 
 	writeJSON(w, http.StatusOK, settingsResponse{
-		AccessProtection:    cfg.AccessTokenHash != "",
-		CheckIntervalHours:  req.CheckIntervalHours,
-		AutoUpdate:          cfg.AutoUpdate,
-		Mirror:              req.Mirror,
-		MirrorOptions:       githubMirrorOptionsResponse(),
-		DockerMirror:        req.DockerMirror,
-		DockerMirrorOptions: dockerMirrorOptionsResponse(),
-		CustomGitHubMirror:  req.CustomGitHubMirror,
-		CustomDockerMirror:  req.CustomDockerMirror,
-		InstallVolume:       req.InstallVolume,
-		VolumeOptions:       volOpts,
+		AccessProtection:     cfg.AccessTokenHash != "",
+		CheckIntervalMinutes: req.CheckIntervalMinutes,
+		AutoUpdate:           cfg.AutoUpdate,
+		Mirror:               req.Mirror,
+		MirrorOptions:        githubMirrorOptionsResponse(),
+		DockerMirror:         req.DockerMirror,
+		DockerMirrorOptions:  dockerMirrorOptionsResponse(),
+		CustomGitHubMirror:   req.CustomGitHubMirror,
+		CustomDockerMirror:   req.CustomDockerMirror,
+		InstallVolume:        req.InstallVolume,
+		VolumeOptions:        volOpts,
 	})
 }

@@ -10,10 +10,10 @@ import (
 )
 
 const (
-	DefaultCheckIntervalHours = 1
-	DefaultDataDir            = "/var/apps/cocode-store/var"
-	DefaultMirror             = "gh-proxy"
-	DefaultDockerMirror       = "daocloud"
+	DefaultCheckIntervalMinutes = 10
+	DefaultDataDir              = "/var/apps/cocode-store/var"
+	DefaultMirror               = "gh-proxy"
+	DefaultDockerMirror         = "daocloud"
 )
 
 type GitHubMirror struct {
@@ -162,15 +162,15 @@ func DockerFallbackPrefixes(selectedKey string, cfg Config) []string {
 
 // Config holds the persistent store configuration.
 type Config struct {
-	AccessTokenHash    string   `json:"access_token_hash,omitempty"`
-	CheckIntervalHours int      `json:"check_interval_hours"`
-	AutoUpdate         bool     `json:"auto_update"`
-	Mirror             string   `json:"mirror"`
-	DockerMirror       string   `json:"docker_mirror"`
-	CustomGitHubMirror string   `json:"custom_github_mirror,omitempty"`
-	CustomDockerMirror string   `json:"custom_docker_mirror,omitempty"`
-	InstallVolume      int      `json:"install_volume"`
-	IgnoredApps        []string `json:"ignored_apps,omitempty"`
+	AccessTokenHash      string   `json:"access_token_hash,omitempty"`
+	CheckIntervalMinutes int      `json:"check_interval_minutes"`
+	AutoUpdate           bool     `json:"auto_update"`
+	Mirror               string   `json:"mirror"`
+	DockerMirror         string   `json:"docker_mirror"`
+	CustomGitHubMirror   string   `json:"custom_github_mirror,omitempty"`
+	CustomDockerMirror   string   `json:"custom_docker_mirror,omitempty"`
+	InstallVolume        int      `json:"install_volume"`
+	IgnoredApps          []string `json:"ignored_apps,omitempty"`
 }
 
 // IsAppIgnored returns true if the given app is in the ignored list.
@@ -204,10 +204,10 @@ func NewManager(dataDir string) *Manager {
 
 func defaultConfig() Config {
 	return Config{
-		CheckIntervalHours: DefaultCheckIntervalHours,
-		AutoUpdate:         true,
-		Mirror:             DefaultMirror,
-		DockerMirror:       DefaultDockerMirror,
+		CheckIntervalMinutes: DefaultCheckIntervalMinutes,
+		AutoUpdate:           true,
+		Mirror:               DefaultMirror,
+		DockerMirror:         DefaultDockerMirror,
 	}
 }
 
@@ -231,8 +231,8 @@ func (m *Manager) LoadConfig() (Config, error) {
 		return m.cfg, err
 	}
 
-	if cfg.CheckIntervalHours < 1 {
-		cfg.CheckIntervalHours = DefaultCheckIntervalHours
+	if cfg.CheckIntervalMinutes < 1 {
+		cfg.CheckIntervalMinutes = DefaultCheckIntervalMinutes
 	}
 	if cfg.Mirror == "" {
 		cfg.Mirror = DefaultMirror
@@ -247,8 +247,8 @@ func (m *Manager) LoadConfig() (Config, error) {
 
 // SaveConfig writes the config to disk.
 func (m *Manager) SaveConfig(cfg Config) error {
-	if cfg.CheckIntervalHours < 1 {
-		cfg.CheckIntervalHours = DefaultCheckIntervalHours
+	if cfg.CheckIntervalMinutes < 1 {
+		cfg.CheckIntervalMinutes = DefaultCheckIntervalMinutes
 	}
 	if cfg.Mirror == "" {
 		cfg.Mirror = DefaultMirror

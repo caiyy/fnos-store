@@ -7,7 +7,7 @@ for (const mount of ['', prefix]) {
     let token = '';
     let tokenReads = 0;
     let installed = false;
-    let interval = 24;
+    let interval = 10;
     await page.route(url => url.pathname.startsWith(`${mount}/api/`), async route => {
       const request = route.request();
       const path = new URL(request.url()).pathname.slice(mount.length);
@@ -36,9 +36,9 @@ for (const mount of ['', prefix]) {
             last_check: '2026-11-10T10:00:00Z',
           } });
         case '/api/settings':
-          if (request.method() === 'PUT') interval = request.postDataJSON().check_interval_hours;
+          if (request.method() === 'PUT') interval = request.postDataJSON().check_interval_minutes;
           return route.fulfill({ json: {
-            check_interval_hours: interval, mirror: 'direct', docker_mirror: 'direct', install_volume: 0,
+            check_interval_minutes: interval, mirror: 'direct', docker_mirror: 'direct', install_volume: 0,
           } });
         case '/api/store-update':
           return route.fulfill({ json: { current_version: '1.9.10', has_update: false } });
@@ -61,14 +61,14 @@ for (const mount of ['', prefix]) {
     if (await menu.isVisible()) await menu.click();
     await page.getByRole('button', { name: '设置', exact: true }).click();
     await page.locator('#check-interval').click();
-    await page.getByRole('option', { name: '6 小时', exact: true }).click();
+    await page.getByRole('option', { name: '30 分钟', exact: true }).click();
     await page.getByRole('button', { name: '保存', exact: true }).click();
     await expect(page.getByRole('dialog')).toHaveCount(0);
 
     // Read back via the UI, so sending a header alone is not mistaken for success.
     if (await menu.isVisible()) await menu.click();
     await page.getByRole('button', { name: '设置', exact: true }).click();
-    await expect(page.locator('#check-interval')).toContainText('6 小时');
+    await expect(page.locator('#check-interval')).toContainText('30 分钟');
     await page.getByRole('button', { name: '取消', exact: true }).click();
     await page.getByRole('button', { name: '安装', exact: true }).click();
     await expect(page.getByText('安装成功', { exact: true })).toBeVisible();

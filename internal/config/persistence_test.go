@@ -1,6 +1,7 @@
 package config
 
 import (
+	"bytes"
 	"os"
 	"path/filepath"
 	"testing"
@@ -69,5 +70,35 @@ func TestAutoUpdateDefaultsEnabledAndCanBeDisabled(t *testing.T) {
 	}
 	if reloaded.Get().AutoUpdate {
 		t.Fatal("explicitly disabled auto update should remain disabled")
+	}
+}
+
+func TestLegacyHourlyIntervalMigratesToTenMinutes(t *testing.T) {
+	dir := t.TempDir()
+	legacy := []byte(`{"check_interval_hours":24,"mirror":"gh-proxy","docker_mirror":"daocloud"}`)
+	if err := os.WriteFile(filepath.Join(dir, "config.json"), legacy, 0o600); err != nil {
+		t.Fatal(err)
+	}
+
+	m := NewManager(dir)
+	if _, err := m.LoadConfig(); err != nil {
+		t.Fatal(err)
+	}
+	if got := m.Get().CheckIntervalMinutes; got != DefaultCheckIntervalMinutes {
+		t.Fatalf("legacy interval migrated to %d minutes, want %d", got, DefaultCheckIntervalMinutes)
+	}
+
+	if err := m.SaveConfig(m.Get()); err != nil {
+		t.Fatal(err)
+	}
+	raw, err := os.ReadFile(filepath.Join(dir, "config.json"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	if want := []byte(`"check_interval_minutes": 10`); !bytes.Contains(raw, want) {
+		t.Fatalf("saved config does not contain %q: %s", want, raw)
+	}
+	if bytes.Contains(raw, []byte(`"check_interval_hours"`)) {
+		t.Fatalf("saved config still contains legacy interval: %s", raw)
 	}
 }

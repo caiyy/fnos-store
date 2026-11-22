@@ -38,10 +38,10 @@ func newAutoUpdateTestServer(t *testing.T, cfg config.Config) *Server {
 
 func TestAutoUpdateCandidates(t *testing.T) {
 	server := newAutoUpdateTestServer(t, config.Config{
-		CheckIntervalHours: 1,
-		AutoUpdate:         true,
-		Mirror:             "gh-proxy",
-		DockerMirror:       "daocloud",
+		CheckIntervalMinutes: 10,
+		AutoUpdate:           true,
+		Mirror:               "gh-proxy",
+		DockerMirror:         "daocloud",
 	})
 
 	candidates := server.autoUpdateCandidates()
@@ -52,21 +52,21 @@ func TestAutoUpdateCandidates(t *testing.T) {
 
 func TestAutoUpdateCandidatesHonorsDisabledAndIgnored(t *testing.T) {
 	disabled := newAutoUpdateTestServer(t, config.Config{
-		CheckIntervalHours: 1,
-		AutoUpdate:         false,
-		Mirror:             "gh-proxy",
-		DockerMirror:       "daocloud",
+		CheckIntervalMinutes: 10,
+		AutoUpdate:           false,
+		Mirror:               "gh-proxy",
+		DockerMirror:         "daocloud",
 	})
 	if got := disabled.autoUpdateCandidates(); len(got) != 0 {
 		t.Fatalf("disabled auto-update returned %+v", got)
 	}
 
 	ignored := newAutoUpdateTestServer(t, config.Config{
-		CheckIntervalHours: 1,
-		AutoUpdate:         true,
-		Mirror:             "gh-proxy",
-		DockerMirror:       "daocloud",
-		IgnoredApps:        []string{"agent2api"},
+		CheckIntervalMinutes: 10,
+		AutoUpdate:           true,
+		Mirror:               "gh-proxy",
+		DockerMirror:         "daocloud",
+		IgnoredApps:          []string{"agent2api"},
 	})
 	if got := ignored.autoUpdateCandidates(); len(got) != 0 {
 		t.Fatalf("ignored app returned %+v", got)

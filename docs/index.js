@@ -5,6 +5,8 @@ async function loadStatus() {
   const storeVersion = $("store-version");
   const appUpdated = $("app-updated");
   const releaseLink = $("release-link");
+  const releaseTag = $("release-tag");
+  const storeVersionBadge = $("store-version-badge");
   const panel = $("status-panel");
 
   try {
@@ -19,6 +21,7 @@ async function loadStatus() {
       : "-";
     releaseLink.href = "https://github.com/caiyy/Agent2API_FnOS/releases/tag/" + app.release_tag;
     releaseLink.textContent = "查看 " + (app.release_tag || "最新发布");
+    releaseTag.textContent = app.release_tag || "fnos-v 系列";
   } catch (error) {
     appVersion.textContent = "需要手动确认";
     appUpdated.textContent = "GitHub 数据暂不可用";
@@ -30,6 +33,7 @@ async function loadStatus() {
     ).then((r) => r.text());
     const match = manifest.match(/^version\s*=\s*(.+)$/m);
     storeVersion.textContent = match ? match[1].trim() : "查看 Release";
+    storeVersionBadge.textContent = match ? "v" + match[1].trim() : "v1.10.x";
   } catch (error) {
     storeVersion.textContent = "查看 Release";
   }

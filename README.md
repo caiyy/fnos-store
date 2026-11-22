@@ -3,6 +3,10 @@
 面向飞牛 fnOS 的第三方应用商店，用于安装、检测更新和维护
 `caiyy/Agent2API_FnOS` 发布的原生应用。
 
+## 站点
+
+GitHub Pages：https://caiyy.github.io/fnos-store/
+
 ## 工作方式
 
 - GitHub Actions 每 5 分钟读取 `caiyy/Agent2API_FnOS` 最新 Release。

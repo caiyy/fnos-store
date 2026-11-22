@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Agent2API for fnOS 与 Cocode Store 的安装、更新和发布入口。">
+  <title>Cocode fnOS</title>
+  <link rel="stylesheet" href="./index.css">
+  <script defer src="./index.js"></script>
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="./">
+      <span class="brand-mark" aria-hidden="true">Cf</span>
+      <span>Cocode fnOS</span>
+    </a>
+    <nav aria-label="主导航">
+      <a href="#agent2api">Agent2API</a>
+      <a href="#store">Cocode Store</a>
+      <a href="#install">安装</a>
+      <a href="#releases">发布</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="hero-grid">
+        <div class="hero-copy">
+          <p class="eyebrow">fnOS 原生应用工具链</p>
+          <h1>Cocode fnOS</h1>
+          <p class="lede">把 Agent2API 官方服务端发布成飞牛 OS 原生 FPK，并通过 Cocode Store 检测、同步和自动更新。</p>
+          <div class="hero-actions">
+            <a class="button primary" href="https://github.com/caiyy/Agent2API_FnOS/releases">下载 FPK</a>
+            <a class="button" href="https://github.com/caiyy/fnos-store/releases">下载商店</a>
+          </div>
+        </div>
+        <div id="status-panel" class="status-panel" aria-live="polite">
+          <div class="status-head">
+            <span class="status-dot"></span>
+            <strong>实时状态</strong>
+          </div>
+          <dl>
+            <div><dt>Agent2API</dt><dd id="app-version">读取中</dd></div>
+            <div><dt>商店</dt><dd id="store-version">读取中</dd></div>
+            <div><dt>更新时间</dt><dd id="app-updated">-</dd></div>
+          </dl>
+          <a id="release-link" class="text-link" href="https://github.com/caiyy/Agent2API_FnOS/releases">查看最新发布</a>
+        </div>
+      </div>
+    </section>
+
+    <section id="agent2api" class="section project">
+      <div class="project-head">
+        <img src="https://raw.githubusercontent.com/caiyy/Agent2API_FnOS/main/packaging/fnos/ICON_256.PNG" alt="" width="64" height="64">
+        <div>
+          <p class="eyebrow">服务端网关</p>
+          <h2>Agent2API for fnOS</h2>
+          <p>独立打包仓库，自动跟踪上游 beta Release，生成 x86 / ARM 双架构 FPK。</p>
+        </div>
+      </div>
+      <div class="spec-list">
+        <span>默认端口 3065</span>
+        <span>上游二进制不改动</span>
+        <span>SHA-256 校验</span>
+        <span>升级保留数据</span>
+      </div>
+      <div class="project-links">
+        <a class="button small" href="https://github.com/caiyy/Agent2API_FnOS">GitHub 仓库</a>
+        <a class="text-link" href="https://github.com/caiyy/Agent2API_FnOS/releases">Release</a>
+      </div>
+    </section>
+
+    <section id="store" class="section project store-accent">
+      <div class="project-head">
+        <img src="https://raw.githubusercontent.com/caiyy/fnos-store/main/fnos/ICON_256.PNG" alt="" width="64" height="64">
+        <div>
+          <p class="eyebrow">飞牛应用商店</p>
+          <h2>Cocode Store</h2>
+          <p>接收 Agent2API FPK 发布事件，立即同步应用清单并自动安装安全更新。</p>
+        </div>
+      </div>
+      <div class="spec-list">
+        <span>数据保留 RPC</span>
+        <span>默认每 10 分钟检查</span>
+        <span>可忽略版本</span>
+        <span>可选关闭自动安装</span>
+      </div>
+      <div class="project-links">
+        <a class="button small" href="https://github.com/caiyy/fnos-store">GitHub 仓库</a>
+        <a class="text-link" href="https://github.com/caiyy/fnos-store/releases">Release</a>
+      </div>
+    </section>
+
+    <section class="section flow">
+      <h2>更新链路</h2>
+      <ol class="flow-list">
+        <li><span>1</span><div><strong>上游发布</strong><p>Agent2API 官方 beta Release</p></div></li>
+        <li><span>2</span><div><strong>FPK 构建</strong><p>打包仓库校验并生成 x86 / ARM 包</p></div></li>
+        <li><span>3</span><div><strong>事件通知</strong><p>发布后立即通知 Cocode Store</p></div></li>
+        <li><span>4</span><div><strong>NAS 升级</strong><p>商店通过数据保留 RPC 自动安装</p></div></li>
+      </ol>
+    </section>
+
+    <section id="install" class="section">
+      <h2>安装</h2>
+      <div class="install-grid">
+        <article class="install-card">
+          <strong>1. 安装商店</strong>
+          <p>从 Cocode Store Release 下载对应架构的 <code>cocode-store_*.fpk</code>，在飞牛应用中心上传。</p>
+        </article>
+        <article class="install-card">
+          <strong>2. 安装 Agent2API</strong>
+          <p>从 Agent2API_Release 下载 <code>agent2api_*.fpk</code>，或直接在 Cocode Store 中安装。</p>
+        </article>
+        <article class="install-card">
+          <strong>3. 首次配置</strong>
+          <p>打开 Agent2API，注册管理员并创建网关 Key，默认端口为 3065。</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="releases" class="section">
+      <h2>发布入口</h2>
+      <div class="release-grid">
+        <a href="https://github.com/caiyy/Agent2API_FnOS/releases">
+          <span>Agent2API FPK</span>
+          <strong>fnos-v 系列</strong>
+        </a>
+        <a href="https://github.com/caiyy/fnos-store/releases">
+          <span>Cocode Store</span>
+          <strong>v1.10.x</strong>
+        </a>
+        <a href="https://github.com/caiyy/fnos-store/actions">
+          <span>商店同步</span>
+          <strong>Actions</strong>
+        </a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <span>Cocode fnOS</span>
+    <span>维护者 <a href="https://github.com/caiyy">caiyy</a></span>
+  </footer>
+</body>
+</html>

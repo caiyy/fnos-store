@@ -1,5 +1,5 @@
 appname         = cocode-store
-version         = 1.10.2
+version         = 1.10.3
 display_name    = Cocode Store
 platform        = x86
 maintainer      = conversun

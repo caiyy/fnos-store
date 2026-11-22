@@ -201,3 +201,26 @@ func TestReconcileInstalledFromDaemon(t *testing.T) {
 		t.Error("app unknown to the daemon must stay not-installed")
 	}
 }
+
+func TestCocodeDistributorVersionUpdate(t *testing.T) {
+	r := NewRegistry()
+	r.Merge([]Manifest{{
+		AppName:     "agent2api",
+		Version:     "3.5.0-beta.6.6",
+		FpkVersion:  "3.5.0-beta.6.6",
+		Distributor: cocodeDistributorTag,
+	}}, []source.RemoteApp{{
+		AppName:    "agent2api",
+		Version:    "3.5.0-beta.7",
+		FpkVersion: "3.5.0-beta.7",
+		ReleaseTag: "fnos-v3.5.0-beta.7",
+	}}, nil)
+
+	apps := r.List()
+	if len(apps) != 1 {
+		t.Fatalf("List() = %+v, want one app", apps)
+	}
+	if apps[0].Status != AppStatusUpdateAvailable {
+		t.Fatalf("status = %q, want %q", apps[0].Status, AppStatusUpdateAvailable)
+	}
+}

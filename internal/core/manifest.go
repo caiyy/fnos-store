@@ -30,6 +30,7 @@ type Manifest struct {
 const (
 	manifestFieldWidth      = 16
 	conversunDistributorTag = "conversun"
+	cocodeDistributorTag    = "Cocode.Ren"
 )
 
 func ParseManifest(path string) (*Manifest, error) {
@@ -123,7 +124,7 @@ func ScanInstalled(appsDir string) ([]Manifest, error) {
 			continue
 		}
 
-		if m.Distributor != conversunDistributorTag {
+		if !trustedDistributor(m.Distributor) {
 			continue
 		}
 
@@ -131,6 +132,10 @@ func ScanInstalled(appsDir string) ([]Manifest, error) {
 	}
 
 	return apps, nil
+}
+
+func trustedDistributor(value string) bool {
+	return value == cocodeDistributorTag || value == conversunDistributorTag
 }
 
 func parseManifestLine(line string) (key, value string, ok bool) {

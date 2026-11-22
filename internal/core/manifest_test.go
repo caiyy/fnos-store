@@ -56,3 +56,17 @@ func TestScanInstalledSkipsMissingManifest(t *testing.T) {
 		t.Fatalf("ScanInstalled = %+v, want only ours", apps)
 	}
 }
+
+func TestScanInstalledAcceptsCocodeDistributor(t *testing.T) {
+	dir := t.TempDir()
+	writeManifest(t, dir, "agent2api", "appname         = agent2api\ndistributor     = Cocode.Ren\nfpk_version     = 3.5.0-beta.6.6\n")
+	writeManifest(t, dir, "foreign", "appname         = foreign\ndistributor     = someone-else\n")
+
+	apps, err := ScanInstalled(dir)
+	if err != nil {
+		t.Fatalf("ScanInstalled: %v", err)
+	}
+	if len(apps) != 1 || apps[0].AppName != "agent2api" {
+		t.Fatalf("ScanInstalled = %+v, want only agent2api", apps)
+	}
+}

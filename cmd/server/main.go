@@ -81,7 +81,7 @@ func main() {
 		GatewayMode:       socketPath != "",
 	})
 
-	sched := scheduler.New(checkInterval, srv.RefreshRegistry, cacheStore.LastCheckAt)
+	sched := scheduler.New(checkInterval, srv.CheckAndAutoUpdate, cacheStore.LastCheckAt)
 	srv.SetScheduler(sched)
 
 	ctx, cancel := context.WithCancel(context.Background())

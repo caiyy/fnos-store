@@ -146,6 +146,8 @@ export const english = {
   '至少 16 个字符': 'At least 16 characters',
   '关闭访问保护（保存后生效）': 'Disable access protection on save',
   '自动检查更新间隔': 'Check for updates every',
+  '自动安装更新': 'Install updates automatically',
+  '发现新版本后自动下载并通过飞牛安全更新通道安装': 'Download new versions and install them through the fnOS data-preserving update channel.',
   '选择间隔': 'Select an interval',
   '1 小时': '1 hour',
   '6 小时': '6 hours',

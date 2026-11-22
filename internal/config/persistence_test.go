@@ -46,3 +46,28 @@ func TestConfigFileIsPrivate(t *testing.T) {
 		t.Fatalf("permissions: %v", st.Mode())
 	}
 }
+
+func TestAutoUpdateDefaultsEnabledAndCanBeDisabled(t *testing.T) {
+	dir := t.TempDir()
+	m := NewManager(dir)
+	if _, err := m.LoadConfig(); err != nil {
+		t.Fatal(err)
+	}
+	if !m.Get().AutoUpdate {
+		t.Fatal("auto update should default to enabled")
+	}
+
+	cfg := m.Get()
+	cfg.AutoUpdate = false
+	if err := m.SaveConfig(cfg); err != nil {
+		t.Fatal(err)
+	}
+
+	reloaded := NewManager(dir)
+	if _, err := reloaded.LoadConfig(); err != nil {
+		t.Fatal(err)
+	}
+	if reloaded.Get().AutoUpdate {
+		t.Fatal("explicitly disabled auto update should remain disabled")
+	}
+}

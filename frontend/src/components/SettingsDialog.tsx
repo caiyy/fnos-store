@@ -59,6 +59,7 @@ const SettingsDialog: React.FC<SettingsDialogProps> = ({
 }) => {
   useLocale();
   const [interval, setInterval] = useState<number>(24);
+  const [autoUpdate, setAutoUpdate] = useState<boolean>(true);
   const [mirror, setMirror] = useState<string>('gh-proxy');
   const [mirrorOptions, setMirrorOptions] = useState<MirrorOption[]>([]);
   const [dockerMirror, setDockerMirror] = useState<string>('daocloud');
@@ -109,6 +110,7 @@ const SettingsDialog: React.FC<SettingsDialogProps> = ({
         ]);
         if (cancelled) return;
         setInterval(settings.check_interval_hours);
+        setAutoUpdate(settings.auto_update ?? true);
         setAccessProtection(settings.access_protection ?? false);
         setAccessToken(undefined);
         const m = settings.mirror || 'gh-proxy';
@@ -196,6 +198,7 @@ const SettingsDialog: React.FC<SettingsDialogProps> = ({
       await updateSettings({
         access_token: accessToken,
         check_interval_hours: interval,
+        auto_update: autoUpdate,
         mirror,
         docker_mirror: dockerMirror,
         custom_github_mirror: customGithubMirror || undefined,
@@ -266,6 +269,22 @@ const SettingsDialog: React.FC<SettingsDialogProps> = ({
                   <SelectItem value="24">{t('24 小时')}</SelectItem>
                 </SelectContent>
               </Select>
+            </div>
+
+            <div className="flex items-start justify-between gap-3">
+              <div className="space-y-1">
+                <label htmlFor="auto-update" className="text-sm font-medium">
+                  {t('自动安装更新')}
+                </label>
+                <p className="text-xs text-muted-foreground">
+                  {t('发现新版本后自动下载并通过飞牛安全更新通道安装')}
+                </p>
+              </div>
+              <Switch
+                id="auto-update"
+                checked={autoUpdate}
+                onCheckedChange={setAutoUpdate}
+              />
             </div>
 
             {volumeOptions.length > 0 && (

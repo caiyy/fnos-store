@@ -164,6 +164,7 @@ func DockerFallbackPrefixes(selectedKey string, cfg Config) []string {
 type Config struct {
 	AccessTokenHash    string   `json:"access_token_hash,omitempty"`
 	CheckIntervalHours int      `json:"check_interval_hours"`
+	AutoUpdate         bool     `json:"auto_update"`
 	Mirror             string   `json:"mirror"`
 	DockerMirror       string   `json:"docker_mirror"`
 	CustomGitHubMirror string   `json:"custom_github_mirror,omitempty"`
@@ -204,6 +205,7 @@ func NewManager(dataDir string) *Manager {
 func defaultConfig() Config {
 	return Config{
 		CheckIntervalHours: DefaultCheckIntervalHours,
+		AutoUpdate:         true,
 		Mirror:             DefaultMirror,
 		DockerMirror:       DefaultDockerMirror,
 	}
@@ -224,7 +226,7 @@ func (m *Manager) LoadConfig() (Config, error) {
 		return m.cfg, err
 	}
 
-	var cfg Config
+	cfg := defaultConfig()
 	if err := json.Unmarshal(raw, &cfg); err != nil {
 		return m.cfg, err
 	}

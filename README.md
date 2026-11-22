@@ -7,7 +7,7 @@
 
 - GitHub Actions 每小时读取 `caiyy/Agent2API_FnOS` 最新 Release。
 - 自动生成根目录 `apps.json`，并提交回本仓库。
-- 商店每小时重新读取应用源，检测已安装版本。
+- 商店默认每小时重新读取应用源，自动安装可安全升级的新版本。
 - 更新通过飞牛应用中心的数据保留 RPC 执行，不会直接覆盖应用目录。
 - 商店本身以 root 运行，只允许受信任的 GitHub Release 作为应用源。
 
@@ -33,6 +33,9 @@ https://github.com/caiyy/Agent2API_FnOS/releases/download
 
 安装后通过飞牛桌面打开 **Cocode Store**。普通用户默认不可见，需要使用
 NAS 管理员账号访问。
+
+设置中的「自动安装更新」默认开启。关闭后商店仍会检查版本，但只在界面中
+显示更新按钮，不执行安装。
 
 ## 构建
 

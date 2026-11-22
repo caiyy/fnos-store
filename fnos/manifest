@@ -1,5 +1,5 @@
 appname         = fnos-apps-store
-version         = 1.9.11
+version         = 1.10.0
 display_name    = Cocode Store
 platform        = x86
 maintainer      = conversun

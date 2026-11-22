@@ -66,9 +66,14 @@ jobs:
         if: startsWith(github.ref, 'refs/tags/v')
         shell: bash
         run: |
+          notes_file="docs/release-notes/${GITHUB_REF_NAME#v}.md"
+          notes_args=(--generate-notes)
+          if [ -f "${notes_file}" ]; then
+            notes_args=(--notes-file "${notes_file}")
+          fi
           gh release create "${{ github.ref_name }}" \
             --title "Cocode Store ${{ github.ref_name }}" \
-            --generate-notes \
+            "${notes_args[@]}" \
             dist/*.fpk \
             dist/*.sha256
         env:

@@ -1,6 +1,6 @@
 import { expect, test } from '@playwright/test';
 
-const prefix = '/app/fnos-apps-store';
+const prefix = '/app/cocode-store';
 
 for (const mount of ['', prefix]) {
   test(`mutations and streamed installs work at ${mount || 'standalone root'}`, async ({ page }) => {

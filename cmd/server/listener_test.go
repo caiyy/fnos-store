@@ -57,13 +57,13 @@ func TestStoreListenerUnixHTTP(t *testing.T) {
 	}}
 	defer transport.CloseIdleConnections()
 	client := &http.Client{Transport: transport, Timeout: 5 * time.Second}
-	response, err := client.Get("http://nas.test/app/fnos-apps-store/api/status?x=a%2Fb")
+	response, err := client.Get("http://nas.test/app/cocode-store/api/status?x=a%2Fb")
 	if err != nil {
 		t.Fatal(err)
 	}
 	defer response.Body.Close()
 	body, err := io.ReadAll(response.Body)
-	if err != nil || response.StatusCode != 200 || string(body) != "GET /app/fnos-apps-store/api/status?x=a%2Fb" {
+	if err != nil || response.StatusCode != 200 || string(body) != "GET /app/cocode-store/api/status?x=a%2Fb" {
 		t.Fatalf("response: status=%d body=%q err=%v", response.StatusCode, body, err)
 	}
 	if err := server.Shutdown(t.Context()); err != nil {

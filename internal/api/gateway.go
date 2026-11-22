@@ -5,7 +5,7 @@ import (
 	"strings"
 )
 
-const gatewayPrefix = "/app/fnos-apps-store"
+const gatewayPrefix = "/app/cocode-store"
 
 func (s *Server) handleCSRFToken(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Cache-Control", "no-store")

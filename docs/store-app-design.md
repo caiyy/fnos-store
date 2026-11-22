@@ -231,9 +231,9 @@ Store 需要知道哪些应用属于 conversun/fnos-apps 管理范围。建议�
 ## 5. 项目结构（建议）
 
 ```
-apps/fnos-apps-store/
+apps/cocode-store/
 ├── fnos/                          # fnOS 包定义
-│   ├── manifest                   # appname=fnos-apps-store, service_port=XXXX
+│   ├── manifest                   # appname=cocode-store, service_port=XXXX
 │   ├── cmd/
 │   │   ├── service-setup          # SERVICE_COMMAND 指向 store-server 二进制
 │   │   └── (继承 shared/cmd/*)
@@ -264,7 +264,7 @@ apps/fnos-apps-store/
 │   │   ├── style.css
 │   │   └── app.js
 │   └── go.mod
-├── update_fnos-apps-store.sh      # 本地构建脚本
+├── update_cocode-store.sh      # 本地构建脚本
 ├── Makefile                       # go build 交叉编译
 └── README.md
 ```

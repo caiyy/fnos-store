@@ -19,7 +19,7 @@ import (
 	"time"
 )
 
-const storeAppName = "fnos-apps-store"
+const storeAppName = "cocode-store"
 
 func main() {
 	addr := envOr("LISTEN_ADDR", ":8011")

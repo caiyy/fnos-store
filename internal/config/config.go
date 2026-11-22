@@ -11,7 +11,7 @@ import (
 
 const (
 	DefaultCheckIntervalHours = 1
-	DefaultDataDir            = "/var/apps/fnos-apps-store/var"
+	DefaultDataDir            = "/var/apps/cocode-store/var"
 	DefaultMirror             = "gh-proxy"
 	DefaultDockerMirror       = "daocloud"
 )

@@ -17,7 +17,7 @@ type MutationOptions = Omit<RequestInit, 'method'> & {
 
 /** Receives an already mount-resolved URL, just like streamSSE. */
 export async function mutationFetch(url: string, options: MutationOptions): Promise<Response> {
-  if (apiBasePath().replace(/\/+$/, '') !== '/app/fnos-apps-store') {
+  if (apiBasePath().replace(/\/+$/, '') !== '/app/cocode-store') {
     return fetch(url, options);
   }
 

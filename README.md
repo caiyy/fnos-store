@@ -26,10 +26,10 @@ https://github.com/caiyy/Agent2API_FnOS/releases/download
 ## 安装
 
 从 [Releases](https://github.com/caiyy/fnos-store/releases) 下载对应架构的
-`fnos-apps-store_*.fpk`，在飞牛应用中心手动安装。
+`cocode-store_*.fpk`，在飞牛应用中心手动安装。
 
-- Intel / AMD：`fnos-apps-store_<version>_x86.fpk`
-- ARM：`fnos-apps-store_<version>_arm.fpk`
+- Intel / AMD：`cocode-store_<version>_x86.fpk`
+- ARM：`cocode-store_<version>_arm.fpk`
 
 安装后通过飞牛桌面打开 **Cocode Store**。普通用户默认不可见，需要使用
 NAS 管理员账号访问。
@@ -50,8 +50,8 @@ NAS 管理员账号访问。
 产物位于：
 
 ```text
-dist/fnos-apps-store_<version>_x86.fpk
-dist/fnos-apps-store_<version>_arm.fpk
+dist/cocode-store_<version>_x86.fpk
+dist/cocode-store_<version>_arm.fpk
 ```
 
 ## 安全边界

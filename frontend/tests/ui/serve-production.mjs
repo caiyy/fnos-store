@@ -4,7 +4,7 @@ import { fileURLToPath } from 'node:url';
 import { extname, resolve, sep } from 'node:path';
 
 const webRoot = fileURLToPath(new URL('../../../web/', import.meta.url));
-const gatewayPrefix = '/app/fnos-apps-store';
+const gatewayPrefix = '/app/cocode-store';
 const mimeTypes = {
   '.html': 'text/html',
   '.js': 'text/javascript',

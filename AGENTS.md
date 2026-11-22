@@ -129,11 +129,11 @@ git tag -a v<VER> -m "fnos-store <VER>" && git push origin v<VER>
 #    the fpk build — but that step is almost always SKIPPED (see gotcha). Once the release
 #    finishes, manually trigger hop 2:
 gh workflow run build-apps.yml --repo conversun/fnos-apps --ref main \
-  --field app=fnos-apps-store --field version=<VER>
+  --field app=cocode-store --field version=<VER>
 # 5. Verify:
 gh run list --repo conversun/fnos-apps --limit 3                    # "Build fnOS App Packages" = success
-gh release view fnos-apps-store/v<VER> --repo conversun/fnos-apps   # x86 + arm .fpk assets present
-curl -s https://raw.githubusercontent.com/conversun/fnos-apps/main/apps.json | grep -A5 fnos-apps-store  # -> <VER>
+gh release view cocode-store/v<VER> --repo conversun/fnos-apps   # x86 + arm .fpk assets present
+curl -s https://raw.githubusercontent.com/conversun/fnos-apps/main/apps.json | grep -A5 cocode-store  # -> <VER>
 ```
 
 **⚠️ Why hop 2 is manual:** `release.yml`'s “Trigger fnos-apps rebuild” step is gated on

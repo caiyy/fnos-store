@@ -10,7 +10,7 @@ import (
 )
 
 func TestStoreVersion(t *testing.T) {
-	const appName = "fnos-apps-store"
+	const appName = "cocode-store"
 
 	testCases := []struct {
 		name            string

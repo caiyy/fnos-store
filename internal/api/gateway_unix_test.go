@@ -72,7 +72,7 @@ func TestGatewayUnixHTTPStreamsBeforeCompletion(t *testing.T) {
 	defer transport.CloseIdleConnections()
 	client := &http.Client{Transport: transport, Timeout: 5 * time.Second}
 	for _, admin := range []bool{false, true} {
-		req, err := http.NewRequestWithContext(t.Context(), "GET", "http://nas.test/app/fnos-apps-store/assets/test.js", nil)
+		req, err := http.NewRequestWithContext(t.Context(), "GET", "http://nas.test/app/cocode-store/assets/test.js", nil)
 		if err != nil {
 			t.Fatal(err)
 		}
@@ -96,7 +96,7 @@ func TestGatewayUnixHTTPStreamsBeforeCompletion(t *testing.T) {
 			t.Fatalf("anonymous asset status=%d", response.StatusCode)
 		}
 	}
-	req, err := http.NewRequestWithContext(t.Context(), "POST", "http://nas.test/app/fnos-apps-store/api/stream", nil)
+	req, err := http.NewRequestWithContext(t.Context(), "POST", "http://nas.test/app/cocode-store/api/stream", nil)
 	if err != nil {
 		t.Fatal(err)
 	}

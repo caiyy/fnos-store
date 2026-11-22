@@ -23,4 +23,4 @@ fpk:
 	bash build.sh
 
 clean:
-	rm -rf $(BUILD_DIR) fnos-apps-store_*.fpk
+	rm -rf $(BUILD_DIR) cocode-store_*.fpk

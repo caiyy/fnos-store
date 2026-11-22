@@ -198,7 +198,7 @@ func TestHalfRegisteredFlag(t *testing.T) {
 // self-update must refuse instead of re-installing the same bytes (observed
 // live during the 1.9.6 rollout).
 func TestSelfUpdateRefusesSameVersion(t *testing.T) {
-	const storeApp = "fnos-apps-store"
+	const storeApp = "cocode-store"
 	registry := core.NewRegistry()
 	registry.Merge([]core.Manifest{{AppName: storeApp, Version: "1.9.6"}},
 		[]source.RemoteApp{{AppName: storeApp, DisplayName: "fnOS Apps", Version: "1.9.6", FpkVersion: "1.9.6"}}, nil)

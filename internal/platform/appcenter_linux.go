@@ -88,7 +88,7 @@ func (a *LinuxAppCenter) InstallFpk(fpkPath string, volume int) error {
 // It lives under the app's own log directory, NOT /tmp: this process runs as
 // root, and a predictable name in a world-writable directory lets any local
 // user pre-create a symlink and have root truncate an arbitrary file.
-const SelfUpdateLogPath = "/var/log/apps/fnos-apps-store-selfupdate.log"
+const SelfUpdateLogPath = "/var/log/apps/cocode-store-selfupdate.log"
 
 // InstallLocal runs install-local, which is destructive: fnOS uninstalls the
 // existing app before reinstalling it. The -v/--volume flag is documented by

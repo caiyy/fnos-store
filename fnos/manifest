@@ -1,4 +1,4 @@
-appname         = fnos-apps-store
+appname         = cocode-store
 version         = 1.10.0
 display_name    = Cocode Store
 platform        = x86
@@ -7,7 +7,7 @@ maintainer_url  = https://github.com/conversun/fnos-store
 distributor     = Cocode.Ren
 distributor_url = https://github.com/caiyy/fnos-store
 desktop_uidir   = ui
-desktop_applaunchname = fnos-apps-store.Application
+desktop_applaunchname = cocode-store.Application
 service_port    = 0
 service_socket  = app.sock
 checkport       = false

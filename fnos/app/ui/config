@@ -1,15 +1,15 @@
 {
     ".url": {
-        "fnos-apps-store.Application": 
+        "cocode-store.Application": 
         {
             "title": "Cocode Store",
             "desc": "Agent2API 第三方应用商店",
             "icon": "images/{0}.png",
             "type": "iframe",
             "protocol": "",
-            "gatewayPrefix": "/app/fnos-apps-store",
+            "gatewayPrefix": "/app/cocode-store",
             "gatewaySocket": "app.sock",
-            "url": "/app/fnos-apps-store/",
+            "url": "/app/cocode-store/",
             "allUsers": false
         }
     }

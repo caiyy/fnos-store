@@ -8,7 +8,7 @@ func TestParseListTable(t *testing.T) {
 	input := `┌──────────────────┬──────────────┬──────────────┬─────────┬─────────────────┐
 │     APP NAME     │ DISPLAY NAME │   VERSION    │ STATUS  │ DEPENDENCY APPS │
 ├──────────────────┼──────────────┼──────────────┼─────────┼─────────────────┤
-│ fnos-apps-store  │ fnOS Apps    │ 1.0.0        │ running │                 │
+│ cocode-store  │ fnOS Apps    │ 1.0.0        │ running │                 │
 │ plexmediaserver  │ Plex         │ 1.43.0.10492 │ running │                 │
 │ embyserver       │ Emby         │ 4.9.3.0      │ running │                 │
 │ xunlei           │ 迅雷         │ 1.0.2        │ stopped │                 │
@@ -30,7 +30,7 @@ func TestParseListTable(t *testing.T) {
 		version     string
 		status      string
 	}{
-		{0, "fnos-apps-store", "fnOS Apps", "1.0.0", "running"},
+		{0, "cocode-store", "fnOS Apps", "1.0.0", "running"},
 		{1, "plexmediaserver", "Plex", "1.43.0.10492", "running"},
 		{2, "embyserver", "Emby", "4.9.3.0", "running"},
 		{3, "xunlei", "迅雷", "1.0.2", "stopped"},

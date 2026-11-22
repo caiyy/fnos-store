@@ -118,7 +118,7 @@ func newDiagnosticTestServer(t *testing.T) *Server {
 	t.Helper()
 
 	registry := core.NewRegistry()
-	registry.Merge([]core.Manifest{{AppName: "fnos-apps-store", Version: "1.0.0"}}, []source.RemoteApp{
+	registry.Merge([]core.Manifest{{AppName: "cocode-store", Version: "1.0.0"}}, []source.RemoteApp{
 		{
 			AppName:     "jellyfin",
 			DisplayName: "Jellyfin",
@@ -127,7 +127,7 @@ func newDiagnosticTestServer(t *testing.T) *Server {
 			AppType:     "native",
 		},
 		{
-			AppName:     "fnos-apps-store",
+			AppName:     "cocode-store",
 			DisplayName: "fnOS Apps",
 			Version:     "1.0.0",
 		},
@@ -136,7 +136,7 @@ func newDiagnosticTestServer(t *testing.T) *Server {
 	return &Server{
 		registry: registry,
 		appsDir:  t.TempDir(),
-		storeApp: "fnos-apps-store",
+		storeApp: "cocode-store",
 	}
 }
 

@@ -31,7 +31,7 @@ func TestGatewayCSRFWithPortStrippedHost(t *testing.T) {
 			s.Mux.HandleFunc("POST /api/check", func(w http.ResponseWriter, r *http.Request) {
 				w.WriteHeader(http.StatusNoContent)
 			})
-			req := httptest.NewRequest("POST", "http://nas.test/app/fnos-apps-store/api/check", nil)
+			req := httptest.NewRequest("POST", "http://nas.test/app/cocode-store/api/check", nil)
 			req.Header.Set("X-Trim-Userid", "1000")
 			req.Header.Set("X-Trim-Isadmin", "true")
 			req.Header.Set("Origin", tc.origin)
@@ -53,7 +53,7 @@ func TestGatewayCSRFTokenEndpoint(t *testing.T) {
 		w.WriteHeader(http.StatusNoContent)
 	})
 	request := func(method, path, token string) *httptest.ResponseRecorder {
-		r := httptest.NewRequest(method, "http://nas.test/app/fnos-apps-store"+path, nil)
+		r := httptest.NewRequest(method, "http://nas.test/app/cocode-store"+path, nil)
 		r.Header.Set("X-Trim-Userid", "1000")
 		r.Header.Set("X-Trim-Isadmin", "true")
 		if method == "PUT" {
@@ -78,7 +78,7 @@ func TestGatewayCSRFTokenEndpoint(t *testing.T) {
 		t.Fatalf("HTTP mutation with fetched token: %d %s", w.Code, w.Body.String())
 	}
 	for _, admin := range []string{"", "false"} {
-		r := httptest.NewRequest("GET", "http://nas.test/app/fnos-apps-store/api/csrf", nil)
+		r := httptest.NewRequest("GET", "http://nas.test/app/cocode-store/api/csrf", nil)
 		if admin != "" {
 			r.Header.Set("X-Trim-Userid", "1001")
 			r.Header.Set("X-Trim-Isadmin", admin)

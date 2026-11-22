@@ -58,7 +58,7 @@ func TestGatewayAuthorization(t *testing.T) {
 			}
 			path := tc.path
 			if !tc.standalone {
-				path = "/app/fnos-apps-store" + path
+				path = "/app/cocode-store" + path
 			}
 			r := httptest.NewRequest(method, "https://nas.test:5667"+path, nil)
 			r.Header.Set("X-Trim-Userid", tc.uid)
@@ -94,23 +94,23 @@ func TestGatewayPaths(t *testing.T) {
 		want           int
 		body, location string
 	}{
-		{"/app/fnos-apps-store", "GET", 308, "", "/app/fnos-apps-store/"},
-		{"/app/fnos-apps-store?x=a%2Fb", "HEAD", 308, "", "/app/fnos-apps-store/?x=a%2Fb"},
-		{"/app/fnos-apps-store/", "GET", 200, "<html>store</html>", ""},
-		{"/app/fnos-apps-store/assets/test.js", "GET", 200, "window.store=true;", ""},
-		{"/app/fnos-apps-store/api/status?x=a%2F%2Fb", "GET", 200, `"query":"x=a%2F%2Fb"`, ""},
-		{"/app/fnos-apps-store/api/missing", "GET", 404, "", ""},
+		{"/app/cocode-store", "GET", 308, "", "/app/cocode-store/"},
+		{"/app/cocode-store?x=a%2Fb", "HEAD", 308, "", "/app/cocode-store/?x=a%2Fb"},
+		{"/app/cocode-store/", "GET", 200, "<html>store</html>", ""},
+		{"/app/cocode-store/assets/test.js", "GET", 200, "window.store=true;", ""},
+		{"/app/cocode-store/api/status?x=a%2F%2Fb", "GET", 200, `"query":"x=a%2F%2Fb"`, ""},
+		{"/app/cocode-store/api/missing", "GET", 404, "", ""},
 		{"/api/status", "GET", 404, "", ""},
-		{"/app/fnos-apps-storeevil/api/status", "GET", 404, "", ""},
+		{"/app/cocode-storeevil/api/status", "GET", 404, "", ""},
 		{"/app/other/api/status", "GET", 404, "", ""},
-		{"/app/fnos-apps-store/api/../status", "GET", 400, "", ""},
-		{"/app/fnos-apps-store/%2e%2e/secret", "GET", 400, "", ""},
-		{"/app/fnos-apps-store/api%2fstatus", "GET", 400, "", ""},
-		{"/app/fnos-apps-store/api%5cstatus", "GET", 400, "", ""},
-		{"/app/fnos-apps-store//api/status", "GET", 400, "", ""},
-		{"/app/fnos-apps-store%2fapi/status", "GET", 400, "", ""},
-		{"/%61pp/fnos-apps-store/api/status", "GET", 404, "", ""},
-		{"/app/fnos-apps-store/app/fnos-apps-store/api/status", "GET", 200, "<html>store</html>", ""},
+		{"/app/cocode-store/api/../status", "GET", 400, "", ""},
+		{"/app/cocode-store/%2e%2e/secret", "GET", 400, "", ""},
+		{"/app/cocode-store/api%2fstatus", "GET", 400, "", ""},
+		{"/app/cocode-store/api%5cstatus", "GET", 400, "", ""},
+		{"/app/cocode-store//api/status", "GET", 400, "", ""},
+		{"/app/cocode-store%2fapi/status", "GET", 400, "", ""},
+		{"/%61pp/cocode-store/api/status", "GET", 404, "", ""},
+		{"/app/cocode-store/app/cocode-store/api/status", "GET", 200, "<html>store</html>", ""},
 	} {
 		t.Run(tc.method+" "+tc.path, func(t *testing.T) {
 			r := httptest.NewRequest(tc.method, "http://nas.test"+tc.path, nil)
